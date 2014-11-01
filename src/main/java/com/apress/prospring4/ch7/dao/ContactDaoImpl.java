@@ -30,13 +30,19 @@ public class ContactDaoImpl implements ContactDao {
     }
 
     @Override
+    @Transactional(readOnly=true)
+    @SuppressWarnings("unchecked")
     public List<Contact> findAllWithDetail() {
-        return null;
+        return sessionFactory.getCurrentSession().
+                getNamedQuery("Contact.findAllWithDetail").list();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Contact findById(Long id) {
-        return null;
+        return (Contact) sessionFactory.getCurrentSession().
+                getNamedQuery("Contact.findById").
+                setParameter("id", id).uniqueResult();
     }
 
     @Override
