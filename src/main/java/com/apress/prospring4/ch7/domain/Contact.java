@@ -16,7 +16,7 @@ import java.util.Set;
         @NamedQuery(name = "Contact.findById",
                 query = "select distinct c from Contact c left join fetch c.contactTelDetails t left join fetch c.hobbies h where c.id = :id"),
         @NamedQuery(name = "Contact.findAllWithDetail",
-                query = "select distinct c from Contact c left join fetch c.contactTelDetails t left join fetch c.hobbies h")
+                query = "select distinct c from Contact c left join fetch c.contactTelDetails t left join fetch c.hobbies h ORDER BY c.id")
 })
 public class Contact implements Serializable {
 
