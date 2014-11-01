@@ -6,8 +6,8 @@ import com.apress.prospring4.ch7.domain.ContactTelDetail;
 import com.apress.prospring4.ch7.domain.Hobby;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
-import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by SERGE on 01.11.2014.
@@ -19,15 +19,16 @@ public class SpringHibernateSample {
         ctx.refresh();
         ContactDao contactDao = ctx.getBean("contactDao", ContactDao.class);
 
-        Contact contact = new Contact();
-        contact.setFirstName("Michael");
-        contact.setLastName("Jackson");
-        contact.setBirthDate(new Date());
-        ContactTelDetail contactTelDetail =
-                new ContactTelDetail("Home", "1111111111");
-        contact.addContactTelDetail(contactTelDetail);
-        contactTelDetail = new ContactTelDetail("Mobile", "2222222222");
-        contact.addContactTelDetail(contactTelDetail);
+        Contact contact = contactDao.findById(1l);
+        contact.setFirstName("Kim Fung");
+        Set<ContactTelDetail> contactTels = contact.getContactTelDetails();
+        ContactTelDetail toDeleteContactTel = null;
+        for (ContactTelDetail contactTel: contactTels) {
+            if (contactTel.getTelType().equals("Home")) {
+                toDeleteContactTel = contactTel;
+            }
+        }
+        contact.removeContactTelDetail(toDeleteContactTel);
         contactDao.save(contact);
         listContactsWithDetail(contactDao.findAllWithDetail());
     }
