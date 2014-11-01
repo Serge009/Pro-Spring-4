@@ -30,7 +30,7 @@ public class ContactDaoImpl implements ContactDao {
     }
 
     @Override
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     public List<Contact> findAllWithDetail() {
         return sessionFactory.getCurrentSession().
@@ -54,7 +54,8 @@ public class ContactDaoImpl implements ContactDao {
 
     @Override
     public void delete(Contact contact) {
-
+        sessionFactory.getCurrentSession().delete(contact);
+        LOG.info("Contact deleted with id: " + contact.getId());
     }
 
     public SessionFactory getSessionFactory() {
