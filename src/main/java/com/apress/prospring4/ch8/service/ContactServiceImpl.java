@@ -19,6 +19,9 @@ import java.util.List;
 @Repository
 @Transactional
 public class ContactServiceImpl implements ContactService {
+    final static String ALL_CONTACT_NATIVE_QUERY =
+            "select id, first_name, last_name, birth_date, version from contact";
+
     private Log log = LogFactory.getLog(ContactServiceImpl.class);
 
     @PersistenceContext
@@ -66,5 +69,12 @@ public class ContactServiceImpl implements ContactService {
         Contact mergedContact = em.merge(contact);
         em.remove(mergedContact);
         log.info("Contact with id: " + contact.getId() + " deleted successfully");
+    }
+
+    @Transactional(readOnly=true)
+    @Override
+    public List<Contact> findAllByNativeQuery() {
+        return em.createNativeQuery(ALL_CONTACT_NATIVE_QUERY,
+               "contactResult").getResultList();
     }
 }

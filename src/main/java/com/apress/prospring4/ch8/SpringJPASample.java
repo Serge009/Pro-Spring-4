@@ -17,9 +17,8 @@ public class SpringJPASample {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("META-INF/spring/beans-8.xml");
         ContactService contactService = ctx.getBean(
                 "jpaContactService", ContactService.class);
-        Contact contact = contactService.findById(1l);
-        contactService.delete(contact);
-        listContactsWithDetail(contactService.findAllWithDetail());
+        List<Contact> contacts = contactService.findAllByNativeQuery();
+        listContacts(contacts);
     }
 
     private static void listContactsWithDetail(List<Contact> contacts) {
