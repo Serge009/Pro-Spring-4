@@ -1,9 +1,10 @@
 package com.apress.prospring4.ch8;
 
 import com.apress.prospring4.ch8.domain.Contact;
+import com.apress.prospring4.ch8.domain.ContactSummary;
 import com.apress.prospring4.ch8.domain.ContactTelDetail;
 import com.apress.prospring4.ch8.domain.Hobby;
-import com.apress.prospring4.ch8.service.ContactSummaryUntypeImpl;
+import com.apress.prospring4.ch8.service.ContactSummaryService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -15,10 +16,12 @@ import java.util.List;
 public class SpringJPASample {
     public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("META-INF/spring/beans-8.xml");
-        ContactSummaryUntypeImpl contactSummaryUntype =
-                ctx.getBean("contactSummaryUntype",
-                        ContactSummaryUntypeImpl.class);
-        contactSummaryUntype.displayAllContactSummary();
+        ContactSummaryService contactSummaryService =
+                ctx.getBean("contactSummaryService", ContactSummaryService.class);
+        List<ContactSummary> contacts = contactSummaryService.findAll();
+        for (ContactSummary contactSummary : contacts) {
+            System.out.println(contactSummary);
+        }
     }
 
     private static void listContactsWithDetail(List<Contact> contacts) {
