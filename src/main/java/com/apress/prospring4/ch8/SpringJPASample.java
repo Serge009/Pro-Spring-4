@@ -1,13 +1,13 @@
 package com.apress.prospring4.ch8;
 
 import com.apress.prospring4.ch8.domain.Contact;
-import com.apress.prospring4.ch8.domain.ContactSummary;
 import com.apress.prospring4.ch8.domain.ContactTelDetail;
 import com.apress.prospring4.ch8.domain.Hobby;
-import com.apress.prospring4.ch8.service.ContactSummaryService;
+import com.apress.prospring4.ch8.service.ContactService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,12 +16,19 @@ import java.util.List;
 public class SpringJPASample {
     public static void main(String[] args) {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("META-INF/spring/beans-8.xml");
-        ContactSummaryService contactSummaryService =
-                ctx.getBean("contactSummaryService", ContactSummaryService.class);
-        List<ContactSummary> contacts = contactSummaryService.findAll();
-        for (ContactSummary contactSummary : contacts) {
-            System.out.println(contactSummary);
-        }
+        ContactService contactService = ctx.getBean(
+                "jpaContactService", ContactService.class);
+        Contact contact = new Contact();
+        contact.setFirstName("Michael");
+        contact.setLastName("Jackson");
+        contact.setBirthDate(new Date());
+        ContactTelDetail contactTelDetail =
+                new ContactTelDetail("Home", "1111111111");
+        contact.addContactTelDetail(contactTelDetail);
+        contactTelDetail = new ContactTelDetail("Mobile", "2222222222");
+        contact.addContactTelDetail(contactTelDetail);
+        contactService.save(contact);
+        listContactsWithDetail(contactService.findAllWithDetail());
     }
 
     private static void listContactsWithDetail(List<Contact> contacts) {

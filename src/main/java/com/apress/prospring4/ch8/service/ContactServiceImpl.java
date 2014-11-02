@@ -50,7 +50,15 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Contact save(Contact contact) {
-        return null;
+        if (contact.getId() == null) {
+            log.info("Inserting new contact");
+            em.persist(contact);
+        } else {
+            em.merge(contact);
+            log.info("Updating existing contact");
+        }
+        log.info("Contact saved with id: " + contact.getId());
+        return contact;
     }
 
     @Override
