@@ -30,9 +30,12 @@ public class ContactServiceImpl implements ContactService {
         return contacts;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Contact> findAllWithDetail() {
-        return null;
+        List<Contact> contacts = em.createNamedQuery(
+                "Contact.findAllWithDetail", Contact.class).getResultList();
+        return contacts;
     }
 
     @Override
