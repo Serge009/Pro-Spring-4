@@ -63,6 +63,8 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void delete(Contact contact) {
-
+        Contact mergedContact = em.merge(contact);
+        em.remove(mergedContact);
+        log.info("Contact with id: " + contact.getId() + " deleted successfully");
     }
 }
